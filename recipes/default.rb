@@ -1,5 +1,9 @@
+# Use a newer version of MiniTest than that shipped with Omnibus
+minitest_version = '3.0.1'
+
 # Hack to install Gem immediately pre Chef 0.10.10 (CHEF-2879)
 gem_package "minitest" do
+  version minitest_version
   action :nothing
 end.run_action(:install)
 
@@ -8,6 +12,8 @@ gem_package "minitest-chef-handler" do
 end.run_action(:install)
 
 Gem.clear_paths
+Gem.activate('minitest', minitest_version)
+
 require "minitest-chef-handler"
 
 # Directory to store cookbook tests
