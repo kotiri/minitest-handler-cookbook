@@ -43,7 +43,11 @@ node[:recipes].each do |recipe|
 end
 
 handler = MiniTest::Chef::Handler.new({
-  :path    => "#{node[:minitest][:path]}/**/*_test.rb",
+  :path    => node[:recipes].map do |r|
+                File.join(node[:minitest][:path],
+                  r.split('::').first,
+                  "#{r.split('::').last}_test.rb")
+              end,
   :verbose => true})
 
 Chef::Log.info("Enabling minitest-chef-handler as a report handler")
